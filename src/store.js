@@ -8,13 +8,14 @@ export const favoriteCountriesSlice = createSlice({
             state.push(action.payload)
         },
         removeFavoriteCountry: (state, action) => {
-            console.log(action.payload)
+            const name = action.payload.name.common
             let idx = null
-            // state.forEach((country, index) => {
-            //     if (1=1) {
-            //     }
-            // })
-            state.push(action.payload)
+            state.forEach((country, index) => {
+                if (name == country.name.common) {
+                    idx = index
+                }
+            })
+            state.splice(idx, 1)
         }
     }
 })
@@ -27,3 +28,5 @@ const store = configureStore({
 
 
 export default store
+
+window.store = store
