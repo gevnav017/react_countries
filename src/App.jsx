@@ -44,6 +44,7 @@ function App() {
   const { removeFavoriteCountry } = favoriteCountriesSlice.actions;
 
   const favoriteCountries = useSelector((state) => state.favoriteCountries);
+  const favCount = favoriteCountries.length
 
   const dispatch = useDispatch();
 
@@ -95,7 +96,7 @@ function App() {
           }}
         >
           {favoriteCountries.length > 0 ? (
-            <Typography>Favorite Countries</Typography>
+            <Typography>Favorite Countries ({favCount})</Typography>
           ) : (
             ""
           )}
