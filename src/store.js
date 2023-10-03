@@ -5,13 +5,23 @@ export const favoriteCountriesSlice = createSlice({
     initialState: [],
     reducers: {
         addFavoriteCountry: (state, action) => {
-            state.push(action.payload)
+            const actionObj = action.payload
+            if ("rating" in actionObj) {
+                const rating = actionObj.rating
+                const countryIdx = actionObj.countryIdx
+                state[countryIdx].rating = rating
+            }
+            else {
+                state.push({
+                    country: actionObj
+                })
+            }
         },
         removeFavoriteCountry: (state, action) => {
-            const name = action.payload.name.common
+            const name = action.payload.country.name.common
             let idx = null
-            state.forEach((country, index) => {
-                if (name == country.name.common) {
+            state.forEach((countryObj, index) => {
+                if (name == countryObj.country.name.common) {
                     idx = index
                 }
             })

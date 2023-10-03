@@ -1,0 +1,6 @@
+.favorites-card:hover {
+    box-shadow: 10px 10px 10px rgb(184, 184, 184), -10px 10px 10px rgb(184, 184, 184);
+    cursor: pointer;
+    transition: all .4s;
+    transform: translateY(-5px);
+}

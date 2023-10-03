@@ -6,10 +6,10 @@ import CountryCard from "./Card";
 import Button from "@mui/material/Button";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Box from "@mui/material/Box";
+import Rating from '@mui/material/Rating';
 import { favoriteCountriesSlice } from "./store";
 import { Typography } from "@mui/material";
 import { Snackbar, Alert } from "@mui/material";
@@ -42,6 +42,7 @@ function App() {
   };
 
   const { removeFavoriteCountry } = favoriteCountriesSlice.actions;
+  const { addFavoriteCountry } = favoriteCountriesSlice.actions;
 
   const favoriteCountries = useSelector((state) => state.favoriteCountries);
   const favCount = favoriteCountries.length
@@ -110,11 +111,11 @@ function App() {
           {favCountry ? <CountryCard favCountry={favCountry} /> : ""}
         </Box>
 
-        <Box sx={{ width: "45%", textAlign: "center" }}>
+        <Box sx={{ width: "45%" }}>
           {favoriteCountries &&
             favoriteCountries.map((favCount, idx) => {
               return (
-                <Box
+                <Box className="favorites-card"
                   sx={{
                     my: 2,
                     p: 2,
@@ -122,17 +123,33 @@ function App() {
                     color: "white",
                     bgcolor: "#72A2D1",
                     position: "relative",
+                    transition: "all .4s"
                   }}
                   key={idx}
                 >
-                  {favCount.name.common}
+                  {favCount.country.name.common}
 
                   <img
                     style={{ marginLeft: "10px" }}
-                    src={favCount.flags.png}
+                    src={favCount.country.flags.png}
                     alt="flag"
                     width="30"
                     height="20"
+                  />
+
+                  <Rating
+                    sx={{ 
+                      position: "absolute",
+                      left: "50%",
+                      transform: "translateX(-50%)"
+                    }}
+                    name="simple-controlled"
+                    value={parseInt(favCount.rating)}
+                    onChange={(e) => {
+                      const rating = e.target.value
+                      const countryIdx = favoriteCountries.findIndex((fav) => fav.country.name.common === favCount.country.name.common)
+                      dispatch(addFavoriteCountry({countryIdx: countryIdx, rating: rating}))
+                    }}
                   />
 
                   <Button

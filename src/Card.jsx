@@ -3,16 +3,18 @@ import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Card from "@mui/material/Card";
 import CountryModal from "./Modal";
+import RatingModal from "./RatingModal";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { Snackbar, Alert } from "@mui/material";
+import { Snackbar, Alert, Rating } from "@mui/material";
 import { favoriteCountriesSlice } from "./store";
 
 const CountryCard = ({ favCountry }) => {
   const [open, setOpen] = useState(false);
+  const [openRating, setOpenRating] = useState(false)
   const [errorSnackbar, setErrorSnackbar] = useState(false);
   const [successSnackbar, setSuccessSnackbar] = useState(false);
 
@@ -26,12 +28,13 @@ const CountryCard = ({ favCountry }) => {
 
   const addToFavorites = (favCountry) => {
     const countryExists =
-      inFavorites.find((fav) => fav.name.common == favCountry.name.common) !==
+      inFavorites.find((fav) => fav.country.name.common == favCountry.name.common) !==
       undefined;
 
     if (countryExists) {
       setErrorSnackbar(true);
     } else {
+      setOpenRating(true)
       dispatch(addFavoriteCountry(favCountry));
       setSuccessSnackbar(true)
     }
@@ -83,6 +86,12 @@ const CountryCard = ({ favCountry }) => {
         setOpen={setOpen}
         favCountry={favCountry}
       ></CountryModal>
+
+      <RatingModal 
+        openRating={openRating} 
+        setOpenRating={setOpenRating} 
+        favCountry={favCountry}
+      />
 
       <Snackbar
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
